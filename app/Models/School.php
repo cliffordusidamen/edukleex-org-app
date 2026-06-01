@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
+class School extends Model
+{
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('for_organisation', function (Builder $builder) {
+            $builder->where('organisation_id', organisation('id'));
+        });
+    }
+}
