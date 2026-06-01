@@ -17,14 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
-        $middleware->append(\Illuminate\Session\Middleware\StartSession::class);
-        $middleware->append(DomainCheckMiddleware::class);
-
         $middleware->web(append: [
+            \Illuminate\Session\Middleware\StartSession::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            DomainCheckMiddleware::class,
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
