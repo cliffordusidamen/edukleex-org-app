@@ -13,16 +13,24 @@ class BackOfficeService
     {
         $this->baseUrlPath = env('BACKOFFICE_URL') . '/api/org-app';
 
-        $this->baseUrlPath = (app()->environment('local') ? 'http://' : 'https://')
+        $this->baseUrlPath = (!app()->environment('production') ? 'http://' : 'https://')
             .str_replace(['http://', 'https://'], '', $this->baseUrlPath);
 
-        $this->host = request()->getHost();
+        $this->host = !app()->environment('production') ? env('DEV_DOMAIN') : request()->getHost();
     }
 
     public function getOrganisationData(string $domain): Array | null
     {
         $this->host = $domain;
-        return $this->makeGetRequest('/org-info');
+        $organisationData = $this->makeGetRequest('/org-info');
+        if (empty($organisationData['id'])) return null;
+
+        return $organisationData;
+    }
+
+    public function createSchool(array $data): Array | null
+    {
+        return $this->makePostRequest('/schools/store', $data);
     }
 
     private function makeGetRequest(string $path): Array | null
@@ -46,13 +54,18 @@ class BackOfficeService
         try {
             $response = Http::withHeaders($headers)->$type($this->baseUrlPath . $path, $data);
 
-            $organisationData = $response->json();
+            if ($response->failed()) {
+                return json_decode($response->body(), true);
+            }
 
-            if (empty($organisationData['id'])) return null;
-
-            return $organisationData;
-
-        } catch (\Exception $e) {}
+            return $response->json();
+        } catch (\Exception $e) {
+            return [
+                'errors' => [
+                    "Exception during $type request to BackOfficeService: " . $e->getMessage(),
+                ],
+            ];
+        }
 
         return null;
     }

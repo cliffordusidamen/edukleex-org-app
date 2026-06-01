@@ -1,8 +1,11 @@
-import { PaginationData, School } from "@/types";
+import { Organisation, PaginationData, School } from "@/types";
 import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { AlertCircleIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SchoolsTable from "./schools-table";
+import { useState } from "react";
+import SchoolFormDialog from "./school-form-dialog";
+import { usePage } from '@inertiajs/react';
 
 export default function OrganisationSchools({
     schools,
@@ -11,6 +14,10 @@ export default function OrganisationSchools({
     schools: School[]
     countries: { id: number, name: string }[],
 }) {
+
+    const organisation = usePage().props.organisation as Organisation;
+
+    const [createSchoolDialogOpen, setCreateSchoolDialogOpen] = useState(false); 
 
     return (
         <>
@@ -35,13 +42,32 @@ export default function OrganisationSchools({
 
             {!!schools.length && (
                 <div className="px-5 py-4">
-                    <div className="text-lg">Schools</div>
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="text-lg">Schools</div>
+
+                        <div className="mb-2 flex items-center justify-end">
+                            <Button onClick={() => setCreateSchoolDialogOpen(true)}>
+                                <PlusIcon className="mr-2" />
+                                Add a school
+                            </Button>
+                        </div>
+                    </div>
 
                     <SchoolsTable
                         schools={schools}
                         countries={countries}
                     />
                 </div>
+            )}
+
+
+            {createSchoolDialogOpen && (
+                <SchoolFormDialog
+                    open={createSchoolDialogOpen}
+                    organisation={organisation}
+                    onOpenChange={setCreateSchoolDialogOpen}
+                    countries={countries}
+                />
             )}
         </>
     );

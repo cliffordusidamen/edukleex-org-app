@@ -12,6 +12,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('schools', [SchoolController::class, 'index'])
         ->name('schools.index');
+
+    Route::post('schools/store', [SchoolController::class, 'store'])
+        ->name('schools.store');
 });
 
 require __DIR__.'/settings.php';
