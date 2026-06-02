@@ -44,4 +44,30 @@ class SchoolController extends Controller
 
         return redirect()->route('schools.index');
     }
+
+    public function update(Request $request, School $school)
+    {
+        if (empty($school->id) || $school->organisation_id != session('__saas.organisation.id')) {
+            throw new \Exception('School not found');
+        }
+
+        try {
+            $resp = $this->backOfficeService->updateSchool($school->id, [
+                ...$request->all(),
+            ]);
+
+            if (isset($resp['errors'])) {
+                return redirect()
+                    ->route('schools.index')
+                    ->withErrors($resp['errors']);
+            }
+            
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('schools.index')
+                ->withErrors(['message' => 'Failed to update school. Please try again. Error: ' . $e->getMessage()]);
+        }
+
+        return redirect()->route('schools.index');
+    }
 }

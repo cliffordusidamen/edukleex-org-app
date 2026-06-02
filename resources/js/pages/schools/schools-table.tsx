@@ -2,14 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Country, School } from "@/types"
+import { Country, Organisation, School } from "@/types"
 import { Link } from "@inertiajs/react";
 import { EllipsisVerticalIcon, ExternalLinkIcon } from "lucide-react";
 import { useState } from "react";
+import SchoolFormDialog from "./school-form-dialog";
 
-export default function SchoolsTable({ schools, countries }: {
+export default function SchoolsTable({ schools, countries, organisation }: {
     schools: School[],
     countries: Country[],
+    organisation: Organisation, // Replace 'any' with the correct type if available
 }) {
     const [editSchoolDialogOpen, setEditSchoolDialogOpen] = useState(false); 
     const [editSchool, setEditSchool] = useState<School>();
@@ -65,6 +67,18 @@ export default function SchoolsTable({ schools, countries }: {
                     </TableBody>
                 </Table>
             </Card>
+
+
+
+            {editSchoolDialogOpen && (
+                <SchoolFormDialog
+                    open={editSchoolDialogOpen}
+                    organisation={organisation}
+                    onOpenChange={setEditSchoolDialogOpen}
+                    countries={countries}
+                    school={editSchool}
+                />
+            )}
 
         </>
     );

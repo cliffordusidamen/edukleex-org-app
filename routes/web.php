@@ -15,6 +15,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('schools/store', [SchoolController::class, 'store'])
         ->name('schools.store');
+
+    Route::post('schools/{school}/update', [SchoolController::class, 'update'])
+        ->name('schools.update');
 });
 
 require __DIR__.'/settings.php';

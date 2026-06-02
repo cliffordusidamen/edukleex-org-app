@@ -56,6 +56,7 @@ export default function OrganisationSchools({
                     <SchoolsTable
                         schools={schools}
                         countries={countries}
+                        organisation={organisation}
                     />
                 </div>
             )}

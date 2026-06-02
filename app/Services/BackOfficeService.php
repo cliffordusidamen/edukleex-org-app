@@ -33,6 +33,11 @@ class BackOfficeService
         return $this->makePostRequest('/schools/store', $data);
     }
 
+    public function updateSchool(int $schoolId, array $data): Array | null
+    {
+        return $this->makePostRequest("/schools/$schoolId/update", $data);
+    }
+
     private function makeGetRequest(string $path): Array | null
     {
         return $this->makeRequest('GET', $path);
