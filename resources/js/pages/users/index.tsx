@@ -1,0 +1,55 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { User } from "@/types";
+import { Head } from "@inertiajs/react";
+
+export default function UsersIndex({
+    users,
+}: {
+    users: User[]
+}) {
+    return (
+        <>
+            <Head title="Users" />
+
+            <div className="px-5 py-4">
+                <div className="text-lg mb-4">Users</div>
+
+                <Card className='p-0 overflow-hidden'>
+                    <Table>
+                        <TableHeader>
+                            <TableRow className=''>
+                                <TableHead className="">Name</TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead className="text-center">Status</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {users.map(user => (
+                                <TableRow key={user.id}>
+                                    <TableCell className="font-medium">{user.full_name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell className="text-center">
+                                        {
+                                            user.is_active
+                                                ? <Badge variant="success">Active</Badge>
+                                                : <Badge variant="danger">Inactive</Badge>
+                                        }
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button size="sm">
+                                            { user.is_active ? 'Deactivate' : 'Activate' }
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Card>
+            </div>
+        </>
+    );
+}

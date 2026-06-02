@@ -6,6 +6,7 @@ import SchoolsTable from "./schools-table";
 import { useState } from "react";
 import SchoolFormDialog from "./school-form-dialog";
 import { usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 export default function OrganisationSchools({
     schools,
@@ -21,6 +22,8 @@ export default function OrganisationSchools({
 
     return (
         <>
+            <Head title="Schools" />
+
             {!schools.length && (
                 <Empty>
                     <EmptyHeader>
