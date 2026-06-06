@@ -12,10 +12,6 @@ export function FlashDisplay() {
     const message = (flash as FlashData)?.message;
     const type = (flash as FlashData)?.type;
 
-    if (!message?.length) {
-        return null
-    }
-
     const alertRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -27,6 +23,10 @@ export function FlashDisplay() {
 
         return () => clearTimeout(timer);
     }, [message]);
+
+    if (!message?.length) {
+        return null
+    }
 
     return (
         <Alert ref={alertRef}>
