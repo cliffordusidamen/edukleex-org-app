@@ -38,6 +38,12 @@ class BackOfficeService
         return $this->makePostRequest("/schools/$schoolId/update", $data);
     }
 
+    public function updateUserStatus(int $userId, bool $isActive): Array | null
+    {
+        $data = ['is_active' => $isActive];
+        return $this->makePostRequest("/users/$userId/update-status", $data);
+    }
+
     private function makeGetRequest(string $path): Array | null
     {
         return $this->makeRequest('GET', $path);

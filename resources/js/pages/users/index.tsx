@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { User } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 
 export default function UsersIndex({
     users,
@@ -40,8 +40,12 @@ export default function UsersIndex({
                                         }
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button size="sm">
-                                            { user.is_active ? 'Deactivate' : 'Activate' }
+                                        <Button size="sm" onClick={() => {
+                                            router.post(`/users/${user.id}/update-status`, {
+                                                is_active: !user.is_active,
+                                            });
+                                        }}>
+                                            {user.is_active ? 'Deactivate' : 'Activate'}
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -53,3 +57,12 @@ export default function UsersIndex({
         </>
     );
 }
+
+UsersIndex.layout = {
+    breadcrumbs: [
+        {
+            title: 'Users',
+            href: '/users',
+        },
+    ],
+};

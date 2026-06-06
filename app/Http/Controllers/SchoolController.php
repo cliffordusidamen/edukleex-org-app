@@ -9,12 +9,6 @@ use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
-    private BackOfficeService $backOfficeService;
-
-    public function __construct(BackOfficeService $backOfficeService)
-    {
-        $this->backOfficeService = $backOfficeService;
-    }
 
     public function index()
     {
