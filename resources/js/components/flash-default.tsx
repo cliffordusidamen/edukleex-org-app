@@ -1,13 +1,14 @@
 import { CheckCircle2Icon, InfoIcon, MessageCircleWarningIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { usePage } from "@inertiajs/react";
+import { useEffect, useRef } from "react";
 
 type FlashData = {
     type?: string,
     message?: string,
 }
 export function FlashDisplay() {
-    const { flash } = usePage().props
+    const { flash } = usePage();
     const message = (flash as FlashData)?.message;
     const type = (flash as FlashData)?.type;
 
@@ -15,8 +16,20 @@ export function FlashDisplay() {
         return null
     }
 
+    const alertRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        alertRef.current?.classList.remove('hidden');
+
+        const timer = setTimeout(() => {
+            alertRef.current?.classList.add('hidden');
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [message]);
+
     return (
-        <Alert>
+        <Alert ref={alertRef}>
             {!type?.length || type.toLocaleLowerCase() === 'info' && (
                 <InfoIcon />
             )}

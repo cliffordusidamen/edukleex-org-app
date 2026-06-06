@@ -1,3 +1,5 @@
+import { FlashDisplay } from "@/components/flash-default";
+import UserAreaWithFlash from "@/components/layouts/user-area-with-flash";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,13 +12,11 @@ export default function UsersIndex({
 }: {
     users: User[]
 }) {
+
     return (
-        <>
-            <Head title="Users" />
+        <UserAreaWithFlash title="Users">
 
             <div className="px-5 py-4">
-                <div className="text-lg mb-4">Users</div>
-
                 <Card className='p-0 overflow-hidden'>
                     <Table>
                         <TableHeader>
@@ -54,7 +54,7 @@ export default function UsersIndex({
                     </Table>
                 </Card>
             </div>
-        </>
+        </UserAreaWithFlash>
     );
 }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OrganisationUserController extends Controller
 {
@@ -24,15 +25,13 @@ class OrganisationUserController extends Controller
             $resp = $this->backOfficeService->updateUserStatus($user->id, $request->input('is_active'));
 
             if (isset($resp['errors'])) {
-                return redirect()
-                    ->route('users.index')
-                    ->withErrors($resp['errors']);
+                flashDanger('Failed to update user status. Please try again.');
             }
+
+            flashSuccess('User ' . ($request->input('is_active') ? 'activated' : 'deactivated') . ' successfully.');
             
         } catch (\Exception $e) {
-            return redirect()
-                ->route('users.index')
-                ->withErrors(['message' => 'Failed to update user. Please try again. Error: ' . $e->getMessage()]);
+            flashDanger('Failed to update user status. Please try again.');
         }
 
         return redirect()->route('users.index');
