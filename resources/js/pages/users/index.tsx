@@ -4,20 +4,33 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User } from "@/types";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Organisation, User } from "@/types";
+import { router, usePage } from "@inertiajs/react";
+import { PlusIcon } from "lucide-react";
+import { useState } from "react";
+import CreateOrganisationUserDialog from "./create-organisation-user-dialog";
 
 export default function UsersIndex({
     users,
 }: {
     users: User[]
 }) {
-    const authUser = usePage().props.auth?.user
+    const authUser = usePage().props.auth?.user;
+    const organisation = usePage().props.organisation as Organisation;
+
+    const [createOrganisationUserDialogOpen, setCreateOrganisationUserDialogOpen] = useState(false);
 
     return (
         <UserAreaWithFlash title="Users">
 
             <div className="px-5 py-4">
+                <div className="mb-2 flex items-center justify-end">
+                    <Button onClick={() => setCreateOrganisationUserDialogOpen(true)}>
+                        <PlusIcon className="mr-2" />
+                        Add User
+                    </Button>
+                </div>
+
                 <Card className='p-0 overflow-hidden'>
                     <Table>
                         <TableHeader>
@@ -57,6 +70,14 @@ export default function UsersIndex({
                     </Table>
                 </Card>
             </div>
+
+            {createOrganisationUserDialogOpen && (
+                <CreateOrganisationUserDialog
+                    open={createOrganisationUserDialogOpen}
+                    organisation={organisation}
+                    onOpenChange={setCreateOrganisationUserDialogOpen}
+                />
+            )}
         </UserAreaWithFlash>
     );
 }
