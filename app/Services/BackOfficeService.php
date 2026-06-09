@@ -44,6 +44,11 @@ class BackOfficeService
         return $this->makePostRequest("/users/$userId/update-status", $data);
     }
 
+    public function createUser(array $data): Array | null
+    {
+        return $this->makePostRequest("/users/store", $data);
+    }
+
     private function makeGetRequest(string $path): Array | null
     {
         return $this->makeRequest('GET', $path);

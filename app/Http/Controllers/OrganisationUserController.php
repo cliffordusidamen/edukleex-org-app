@@ -14,12 +14,17 @@ class OrganisationUserController extends Controller
         return inertia('users/index', compact('users'));
     }
 
-    public function updateStatus(Request $request, User $user)
+    private function _checkUserOrganisation(User $user)
     {
-        
         if (empty($user->id) || $user->organisation_id != organisation('id')) {
             throw new \Exception('User not found');
         }
+    }
+
+    public function updateStatus(Request $request, User $user)
+    {
+        
+        $this->_checkUserOrganisation($user);
 
         try {
             $resp = $this->backOfficeService->updateUserStatus($user->id, $request->input('is_active'));
@@ -32,6 +37,29 @@ class OrganisationUserController extends Controller
             
         } catch (\Exception $e) {
             flashDanger('Failed to update user status. Please try again.');
+        }
+
+        return redirect()->route('users.index');
+    }
+
+
+    public function store(Request $request, User $user)
+    {
+
+        try {
+            $resp = $this->backOfficeService->createUser($request->input());
+                
+            if (isset($resp['errors'])) {
+                flashDanger('Failed to add user. Please try again.');
+                return redirect()
+                    ->route('users.index')
+                    ->withErrors($resp['errors']);
+            }
+
+            flashSuccess('User added successfully.');
+            
+        } catch (\Exception $e) {
+            flashDanger('Failed to add user. Please try again.');
         }
 
         return redirect()->route('users.index');

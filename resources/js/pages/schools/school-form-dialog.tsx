@@ -116,7 +116,7 @@ export default function SchoolFormDialog({
                                                 Default Subdomain
                                             </Label>
                                             <InputGroup>
-                                                <InputGroupInput placeholder="" name="default_subdomain" className="!pl-1" maxLength={10} />
+                                                <InputGroupInput placeholder="" name="default_subdomain" className="pl-1!" maxLength={10} />
                                                 <InputGroupAddon>
                                                     <InputGroupText>https://</InputGroupText>
                                                 </InputGroupAddon>
@@ -141,7 +141,7 @@ export default function SchoolFormDialog({
                                                 <InputGroupInput
                                                     placeholder=""
                                                     name="custom_domain"
-                                                    className="!pl-1"
+                                                    className="pl-1!"
                                                     maxLength={150}
                                                     defaultValue={school?.custom_domain?.replace('www.', '') ?? ''}
                                                 />

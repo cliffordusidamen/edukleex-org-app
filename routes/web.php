@@ -27,6 +27,9 @@ Route::middleware(['auth'])->prefix('users')->name('users.')->group(function () 
 
     Route::post('/{user}/update-status', [OrganisationUserController::class, 'updateStatus'])
         ->name('update-status');
+
+    Route::post('/store',[OrganisationUserController::class, 'store'])
+        ->name('store');
 });
 
 require __DIR__.'/settings.php';

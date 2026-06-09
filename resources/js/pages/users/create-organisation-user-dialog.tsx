@@ -41,7 +41,7 @@ export default function CreateOrganisationUserDialog({
 
                 <Form
                     ref={formRef}
-                    action={`/organisations/${organisation.id}/users/store`}
+                    action={`/users/store`}
                     method="post"
                     transform={(data) => ({
                         first_name: data.first_name,
@@ -58,7 +58,7 @@ export default function CreateOrganisationUserDialog({
                         toast.success("User created successfully", { duration: 3000 });
                         setTimeout(() => {
                             router.replace({
-                                url: `/organisations/${organisation.id}/users`,
+                                url: `/users`,
                             });
                         }, 3000);
                     }}
