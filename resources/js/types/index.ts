@@ -55,6 +55,7 @@ export type School = {
     organisation_id: number;
     name: string;
     slogan?: string;
+    logo_url?: string;
     default_subdomain: string | null;
     custom_domain: string | null;
     country?: Country;

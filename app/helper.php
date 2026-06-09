@@ -68,3 +68,10 @@ if (!function_exists('flashInfo')) {
         flashMessage('info', $message, $data);
     }
 }
+
+if (!function_exists('isProduction')) {
+    function isProduction()
+    {
+        return app()->environment('production');
+    }
+}

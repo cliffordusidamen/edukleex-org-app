@@ -31,7 +31,14 @@ export default function SchoolsTable({ schools, countries, organisation }: {
                     <TableBody>
                         {schools.map(school => (
                             <TableRow key={school.id}>
-                                <TableCell className="font-medium">{school.name}</TableCell>
+                                <TableCell className="font-medium">
+                                    <div className="flex flex-row items-center justify-start gap-2">
+                                        {!!school?.logo_url?.length && (
+                                            <img src={school?.logo_url} alt='' className='h-8 bg-white border rounded' />
+                                        )}
+                                        <span>{school.name}</span>
+                                    </div>
+                                </TableCell>
                                 <TableCell>{school?.country?.name}</TableCell>
                                 <TableCell className='text-center'>
                                     <a

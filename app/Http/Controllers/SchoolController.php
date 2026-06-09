@@ -12,7 +12,7 @@ class SchoolController extends Controller
 
     public function index()
     {
-        $schools = School::with('country')->get();
+        $schools = School::with('country')->get()->append(['logo_url']);
         $countries = Country::getCountriesList();
 
         return inertia('schools/index', compact('schools', 'countries'));
