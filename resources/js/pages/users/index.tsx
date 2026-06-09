@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { User } from "@/types";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 
 export default function UsersIndex({
     users,
 }: {
     users: User[]
 }) {
+    const authUser = usePage().props.auth?.user
 
     return (
         <UserAreaWithFlash title="Users">
@@ -40,13 +41,15 @@ export default function UsersIndex({
                                         }
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button size="sm" onClick={() => {
-                                            router.post(`/users/${user.id}/update-status`, {
-                                                is_active: !user.is_active,
-                                            });
-                                        }}>
-                                            {user.is_active ? 'Deactivate' : 'Activate'}
-                                        </Button>
+                                        {authUser?.id != user.id && (
+                                            <Button size="sm" onClick={() => {
+                                                router.post(`/users/${user.id}/update-status`, {
+                                                    is_active: !user.is_active,
+                                                });
+                                            }}>
+                                                {user.is_active ? 'Deactivate' : 'Activate'}
+                                            </Button>
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}
