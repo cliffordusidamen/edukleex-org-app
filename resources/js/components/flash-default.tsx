@@ -1,4 +1,4 @@
-import { CheckCircle2Icon, InfoIcon, MessageCircleWarningIcon } from "lucide-react";
+import { AlertCircleIcon, CheckCircle2Icon, InfoIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { usePage } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
@@ -39,7 +39,7 @@ export function FlashDisplay() {
             )}
 
             {!!type?.length && (type.toLocaleLowerCase() === 'error' || type.toLocaleLowerCase() === 'danger') && (
-                <MessageCircleWarningIcon />
+                <AlertCircleIcon />
             )}
 
             <AlertTitle>{ message }</AlertTitle>

@@ -29,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
             ]
         );
 
+        $middleware->alias([
+            'active' => App\Http\Middleware\OnlyActiveUserMiddleware::class
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

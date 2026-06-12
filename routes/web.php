@@ -6,11 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
 
-Route::middleware(['auth'])->group(function () {
     Route::get('schools', [SchoolController::class, 'index'])
         ->name('schools.index');
 
@@ -21,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('schools.update');
 });
 
-Route::middleware(['auth'])->prefix('users')->name('users.')->group(function () {
+Route::middleware(['auth', 'active'])->prefix('users')->name('users.')->group(function () {
     Route::get('/', [OrganisationUserController::class, 'index'])
         ->name('index');
 

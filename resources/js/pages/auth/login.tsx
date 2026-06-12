@@ -8,9 +8,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
+// import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import { FlashDisplay } from '@/components/flash-default';
 
 type Props = {
     status?: string;
@@ -32,6 +33,9 @@ export default function Login({ status, canResetPassword }: Props) {
                 {({ processing, errors }) => (
                     <>
                         <div className="grid gap-6">
+
+                            <FlashDisplay />
+
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
