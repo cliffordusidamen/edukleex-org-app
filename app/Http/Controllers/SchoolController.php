@@ -6,6 +6,7 @@ use App\Models\Country;
 use App\Models\School;
 use App\Services\BackOfficeService;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class SchoolController extends Controller
 {
@@ -21,9 +22,14 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         try {
-            $resp = $this->backOfficeService->createSchool([
-                ...$request->all(),
-            ]);
+            /** @var UploadedFile */
+            $logo = $request->logo;
+
+            $resp = $this->backOfficeService->createSchool(
+                $request->except(['logo']),
+                $logo ?? null
+            );
+
             if (isset($resp['errors'])) {
                 return redirect()
                     ->route('schools.index')
@@ -46,9 +52,14 @@ class SchoolController extends Controller
         }
 
         try {
-            $resp = $this->backOfficeService->updateSchool($school->id, [
-                ...$request->all(),
-            ]);
+            /** @var ?UploadedFile */
+            $logo = $request->logo;
+
+            $resp = $this->backOfficeService->updateSchool(
+                $school->id,
+                $request->except('logo'),
+                $logo
+            );
 
             if (isset($resp['errors'])) {
                 return redirect()

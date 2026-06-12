@@ -9,6 +9,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/
 import { Form, router, usePage } from "@inertiajs/react";
 import { FlashDisplay } from "@/components/flash-default";
 import toast from "react-hot-toast";
+import { FileInput } from "@/components/file-input";
 
 export default function SchoolFormDialog({
     organisation,
@@ -74,6 +75,24 @@ export default function SchoolFormDialog({
                             )}
 
                             <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4">
+
+                                <div className="flex flex-row items-start justify-start gap-2">
+
+                                    {!!school?.logo_url?.length && (
+                                        <img src={school?.logo_url} alt='' className='h-15 bg-white border rounded' />
+                                    )}
+
+                                    <div className="grow p-2">
+                                        <FileInput
+                                            label="Logo"
+                                            name="logo"
+                                            wrapperClassName='mb-3'
+                                            error={errors.logo}
+                                            accept=".jpg,.jpeg,.png,.wmp"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="p-4">
                                     <TextInput
                                         label="Name of School"
