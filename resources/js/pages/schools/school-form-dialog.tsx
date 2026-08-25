@@ -1,6 +1,7 @@
 import { SelectInput } from "@/components/select-input";
 import { TextInput } from "@/components/text-input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRef, useState } from "react";
 import { Organisation, School } from "@/types";
@@ -27,6 +28,7 @@ export default function SchoolFormDialog({
     const [internalOpen, setInternalOpen] = useState(open);
     const domain = usePage().props.app_domain as string;
     const formRef = useRef(null);
+    const [hasMultipleProgrammes, setHasMultipleProgrammes] = useState(school?.has_multiple_programmes ?? false);
     const actionUrl = school
         ? `/schools/${school.id}/update`
         : `/schools/store`;
@@ -175,6 +177,24 @@ export default function SchoolFormDialog({
                                             ) : null}
                                         </div>
                                     )}
+                                </div>
+
+
+                                <div className="p-4">
+                                    <Label htmlFor="has-multiple-programmes" className="flex items-center gap-3">
+                                        <input type="hidden" name="has_multiple_programmes" value={hasMultipleProgrammes ? '1' : '0'} />
+                                        <Checkbox
+                                            id="has-multiple-programmes"
+                                            checked={hasMultipleProgrammes}
+                                            onCheckedChange={(checked) => setHasMultipleProgrammes(checked === true)}
+                                        />
+                                        <div>
+                                            Run multiple programmes
+                                            <p className="text-muted mt-2">
+                                                Aside from the normal academic programmes, does the school enrol students for other programmes within same semester/term?
+                                            </p>
+                                        </div>
+                                    </Label>
                                 </div>
                             </div>
                             <DialogFooter className="border-t pt-4 flex-row justify-center sm:justify-center">

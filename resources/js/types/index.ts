@@ -58,6 +58,7 @@ export type School = {
     logo_url?: string;
     default_subdomain: string | null;
     custom_domain: string | null;
+    has_multiple_programmes: boolean;
     country?: Country;
     country_id?: number;
     created_at: string;
