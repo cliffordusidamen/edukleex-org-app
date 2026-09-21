@@ -40,8 +40,9 @@ class DomainCheckMiddleware
 
     private function _refreshSessionData(Request $request): Array | null
     {
+        
         $organisation = (new BackOfficeService())->getOrganisationData(
-            app()->environment('local') ? env('DEV_DOMAIN') : $request->getHost()
+            app()->environment('local') ? env('DEV_DOMAIN', $request->getHost()) : $request->getHost()
         );
 
         

@@ -17,7 +17,7 @@ class BackOfficeService
         $this->baseUrlPath = (!app()->environment('production') ? 'http://' : 'https://')
             .str_replace(['http://', 'https://'], '', $this->baseUrlPath);
 
-        $this->host = !app()->environment('production') ? env('DEV_DOMAIN') : request()->getHost();
+        $this->host = !app()->environment('production') ? env('DEV_DOMAIN', request()->getHost()) : request()->getHost();
     }
 
     public function getOrganisationData(string $domain): Array | null
