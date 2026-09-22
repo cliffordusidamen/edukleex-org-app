@@ -181,13 +181,17 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 <select 
                                                     value={data.title} 
                                                     onChange={e => setData('title', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.title && "border-red-500"
+                                                    )}
                                                 >
                                                     <option value="Mr.">Mr.</option>
                                                     <option value="Mrs.">Mrs.</option>
                                                     <option value="Ms.">Ms.</option>
                                                     <option value="Dr.">Dr.</option>
                                                 </select>
+                                                {errors.title && <span className="text-[10px] text-red-500">{errors.title}</span>}
                                             </div>
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">First Name</label>
@@ -195,9 +199,13 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     type="text" 
                                                     value={data.first_name} 
                                                     onChange={e => setData('first_name', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.first_name && "border-red-500"
+                                                    )}
                                                     required
                                                 />
+                                                {errors.first_name && <span className="text-[10px] text-red-500">{errors.first_name}</span>}
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -207,9 +215,13 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     type="text" 
                                                     value={data.last_name} 
                                                     onChange={e => setData('last_name', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.last_name && "border-red-500"
+                                                    )}
                                                     required
                                                 />
+                                                {errors.last_name && <span className="text-[10px] text-red-500">{errors.last_name}</span>}
                                             </div>
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Email</label>
@@ -217,15 +229,22 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     type="email" 
                                                     value={data.email} 
                                                     onChange={e => setData('email', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.email && "border-red-500"
+                                                    )}
                                                     required
                                                 />
+                                                {errors.email && <span className="text-[10px] text-red-500">{errors.email}</span>}
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Phone Number</label>
-                                                <div className="text-sm border rounded px-2 py-1.5 focus-within:ring-1 focus-within:ring-blue-500">
+                                                <div className={cn(
+                                                    "text-sm border rounded px-2 py-1.5 focus-within:ring-1 focus-within:ring-blue-500",
+                                                    errors.phone && "border-red-500"
+                                                )}>
                                                     <PhoneInput
                                                         international
                                                         defaultCountry="US"
@@ -234,6 +253,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                                         className="flex gap-2"
                                                     />
                                                 </div>
+                                                {errors.phone && <span className="text-[10px] text-red-500">{errors.phone}</span>}
                                             </div>
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Employee ID</label>
@@ -241,8 +261,12 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     type="text" 
                                                     value={data.employee_id} 
                                                     onChange={e => setData('employee_id', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.employee_id && "border-red-500"
+                                                    )}
                                                 />
+                                                {errors.employee_id && <span className="text-[10px] text-red-500">{errors.employee_id}</span>}
                                             </div>
                                         </div>
                                         <div className="flex flex-col gap-1">
@@ -251,8 +275,12 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 type="text" 
                                                 value={data.designation} 
                                                 onChange={e => setData('designation', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
-                                            />
+                                                    className={cn(
+                                                        "text-sm border rounded px-2 py-1.5 focus:outline-blue-500",
+                                                        errors.designation && "border-red-500"
+                                                    )}
+                                                />
+                                                {errors.designation && <span className="text-[10px] text-red-500">{errors.designation}</span>}
                                         </div>
                                         <div className="flex flex-col gap-2 py-2">
                                             <div className="flex items-center gap-2">
@@ -275,7 +303,10 @@ export default function SchoolShow({ school, tab, employees }: {
                                                             type={showPassword ? 'text' : 'password'} 
                                                             value={data.password} 
                                                             onChange={e => setData('password', e.target.value)}
-                                                            className="text-sm border rounded px-2 py-1.5 pr-10 w-full focus:outline-blue-500"
+                                                            className={cn(
+                                                                "text-sm border rounded px-2 py-1.5 pr-10 w-full focus:outline-blue-500",
+                                                                errors.password && "border-red-500"
+                                                            )}
                                                             required={!data.autogenerate_password}
                                                         />
                                                         <button 
@@ -332,6 +363,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                     <table className="w-full text-left text-sm">
                                         <thead className="bg-neutral-50 text-neutral-500">
                                             <tr>
+                                                <th className="px-4 py-2 font-medium">Employee ID</th>
                                                 <th className="px-4 py-2 font-medium">Name</th>
                                                 <th className="px-4 py-2 font-medium">Email</th>
                                                 <th className="px-4 py-2 font-medium">Role</th>
@@ -342,10 +374,11 @@ export default function SchoolShow({ school, tab, employees }: {
                                         <tbody className="divide-y">
                                             {employees.data.map((employee) => (
                                                 <tr key={employee.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                                                    <td className="px-4 py-2">{employee.employee_id}</td>
                                                     <td className="px-4 py-2">{`${employee.person.title} ${employee.person.first_name} ${employee.person.last_name}`}</td>
                                                     <td className="px-4 py-2">{employee.person.email}</td>
                                                     <td className="px-4 py-2">
-                                                        <div className="flex items-center gap-1.5" title={!!employee.is_admin && 'ADMIN'}>
+                                                        <div className="flex items-center gap-1.5" title={!!employee.is_admin ? 'ADMIN' : ''}>
                                                             {!!employee.is_admin && <ShieldCheck size={14} className="text-blue-600" />}
                                                             {employee.designation}
                                                         </div>
