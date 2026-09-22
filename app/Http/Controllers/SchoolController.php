@@ -19,6 +19,22 @@ class SchoolController extends Controller
         return inertia('schools/index', compact('schools', 'countries'));
     }
 
+    public function show(Request $request, School $school, string $tab = 'overview')
+    {
+        if ($school->organisation_id != session('__saas.organisation.id')) {
+            abort(404);
+        }
+
+        $allowedTabs = ['overview', 'employees', 'subscriptions'];
+        if (!in_array($tab, $allowedTabs, true)) {
+            abort(404);
+        }
+
+        $school->load('country')->append(['logo_url']);
+
+        return inertia('schools/show', compact('school', 'tab'));
+    }
+
     public function store(Request $request)
     {
         try {

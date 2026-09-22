@@ -17,6 +17,18 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::post('schools/{school}/update', [SchoolController::class, 'update'])
         ->name('schools.update');
+
+    Route::get('schools/{school}/show', [SchoolController::class, 'show'])
+        ->defaults('tab', 'overview')
+        ->name('schools.show');
+
+    Route::get('schools/{school}/show/employees', [SchoolController::class, 'show'])
+        ->defaults('tab', 'employees')
+        ->name('schools.show.employees');
+
+    Route::get('schools/{school}/show/subscriptions', [SchoolController::class, 'show'])
+        ->defaults('tab', 'subscriptions')
+        ->name('schools.show.subscriptions');
 });
 
 Route::middleware(['auth', 'active'])->prefix('users')->name('users.')->group(function () {

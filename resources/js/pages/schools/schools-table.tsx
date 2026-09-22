@@ -6,7 +6,11 @@ import { Country, Organisation, School } from "@/types"
 import { Link } from "@inertiajs/react";
 import { EllipsisVerticalIcon, ExternalLinkIcon } from "lucide-react";
 import { useState } from "react";
+import { show } from "@/routes/schools";
 import SchoolFormDialog from "./school-form-dialog";
+
+const schoolPublicUrl = (school: School) =>
+    `http://${school?.default_subdomain?.replace('www.', '') || '#'}`;
 
 export default function SchoolsTable({ schools, countries, organisation }: {
     schools: School[],
@@ -36,7 +40,12 @@ export default function SchoolsTable({ schools, countries, organisation }: {
                                         {!!school?.logo_url?.length && (
                                             <img src={school?.logo_url} alt='' className='h-8 bg-white border rounded' />
                                         )}
-                                        <span>{school.name}</span>
+                                        <a
+                                            href={show(school).url}
+                                            className="hover:underline"
+                                        >
+                                            {school.name}
+                                        </a>
                                     </div>
                                 </TableCell>
                                 <TableCell>{school?.country?.name}</TableCell>
@@ -60,6 +69,13 @@ export default function SchoolsTable({ schools, countries, organisation }: {
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="w-56" align="end">
+                                            <DropdownMenuItem asChild>
+                                                <a
+                                                    href={show(school).url}
+                                                >
+                                                    View
+                                                </a>
+                                            </DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => {
                                                 setEditSchool(school);
                                                 setEditSchoolDialogOpen(true);
