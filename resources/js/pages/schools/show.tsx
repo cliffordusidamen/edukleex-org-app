@@ -3,7 +3,7 @@ import { index, show } from "@/routes/schools";
 import { School } from "@/types";
 import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MouseEvent, useState } from "react";
+import { FormEvent, MouseEvent, useState } from "react";
 import { 
     Dialog, 
     DialogContent, 
@@ -13,6 +13,8 @@ import {
     DialogTitle, 
     DialogTrigger 
 } from "@/components/ui/dialog";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 type TabKey = 'overview' | 'employees' | 'subscriptions';
 
@@ -81,14 +83,15 @@ export default function SchoolShow({ school, tab, employees }: {
         },
     ] as const;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.SubmitEvent) => {
         e.preventDefault();
-        post(show(school).url + '/employees', {
-            onSuccess: () => {
-                setIsModalOpen(false);
-                reset();
-            },
-        });
+        console.log({ data })
+        // post(show(school).url + '/employees', {
+        //     onSuccess: () => {
+        //         setIsModalOpen(false);
+        //         reset();
+        //     },
+        // });
     };
 
     return (
@@ -217,12 +220,15 @@ export default function SchoolShow({ school, tab, employees }: {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Phone Number</label>
-                                                <input 
-                                                    type="text" 
-                                                    value={data.phone_number} 
-                                                    onChange={e => setData('phone_number', e.target.value)}
-                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
-                                                />
+                                                <div className="text-sm border rounded px-2 py-1.5 focus-within:ring-1 focus-within:ring-blue-500">
+                                                    <PhoneInput
+                                                        international
+                                                        defaultCountry="US"
+                                                        value={data.phone_number}
+                                                        onChange={value => setData('phone_number', value || '')}
+                                                        className="flex gap-2"
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Employee ID</label>
