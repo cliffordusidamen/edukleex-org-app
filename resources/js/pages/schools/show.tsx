@@ -1,7 +1,7 @@
 import { Head, router, useForm } from "@inertiajs/react";
 import { index, show } from "@/routes/schools";
 import { Person, School } from "@/types";
-import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 import { MouseEvent, useState } from "react";
 import { 
@@ -245,7 +245,6 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 />
                                             </div>
                                         </div>
-
                                         <div className="flex flex-col gap-1">
                                             <label className="text-xs font-medium text-neutral-600">Designation</label>
                                             <input 
@@ -255,8 +254,6 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
                                             />
                                         </div>
-
-                                        
                                         <div className="flex flex-col gap-2 py-2">
                                             <div className="flex items-center gap-2">
                                                 <input 
@@ -347,12 +344,19 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 <tr key={employee.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800">
                                                     <td className="px-4 py-2">{`${employee.person.title} ${employee.person.first_name} ${employee.person.last_name}`}</td>
                                                     <td className="px-4 py-2">{employee.person.email}</td>
-                                                    <td className="px-4 py-2">{employee.designation}</td>
                                                     <td className="px-4 py-2">
-                                                        <span className={cn(
-                                                            "px-2 py-0.5 rounded-full text-xs font-medium",
-                                                            !!employee.is_active ? "bg-green-100 text-green-700" : "bg-neutral-100 text-neutral-700"
-                                                        )}>
+                                                        <div className="flex items-center gap-1.5" title={!!employee.is_admin && 'ADMIN'}>
+                                                            {!!employee.is_admin && <ShieldCheck size={14} className="text-blue-600" />}
+                                                            {employee.designation}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-2">
+                                                        <span
+                                                            className={cn(
+                                                                "px-2 py-0.5 rounded-full text-xs font-medium",
+                                                                !!employee.is_active ? "bg-green-100 text-green-700" : "bg-neutral-100 text-neutral-700"
+                                                            )}
+                                                        >
                                                             {!!employee.is_active ? 'ACTIVE' : 'INACTIVE'}
                                                         </span>
                                                     </td>
