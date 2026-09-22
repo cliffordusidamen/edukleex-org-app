@@ -43,7 +43,7 @@ class SchoolController extends Controller
             $baseUrl = $school->default_subdomain;
             
             $employees = $this->saasService->setBaseUrl($baseUrl)->makeRequest('GET', '/parent-api/employees', ['page' => $page]);
-            
+
             $data['employees'] = $employees;
         }
 
@@ -105,5 +105,24 @@ class SchoolController extends Controller
         }
 
         return redirect()->route('schools.index');
+    }
+
+    public function storeEmployee(Request $request, School $school)
+    {
+        if (empty($school->id) || $school->organisation_id != session('__saas.organisation.id')) {
+            throw new \Exception('School not found');
+        }
+
+        $resp = $this->saasService->saveEmployee($school, $request->all());
+
+        if (isset($resp['errors'])) {
+            return redirect()
+                ->route('schools.show.employees', ['school' => $school->id])
+                ->withErrors($resp['errors']);
+        }
+
+        return redirect()
+            ->route('schools.show.employees', ['school' => $school->id])
+            ->with('success', 'Employee added successfully.');
     }
 }

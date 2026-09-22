@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\School;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 
@@ -75,7 +76,7 @@ class SaasService
             }
 
             $response = $request->$type($this->baseUrl . '/' . ltrim($path, '/'), $data);
-
+            
             if ($response->failed()) {
                 return json_decode($response->body(), true);
             }
@@ -90,5 +91,11 @@ class SaasService
         }
 
         return null;
+    }
+
+    public function saveEmployee(School $school, array $data): mixed
+    {
+        $this->setBaseUrl($school->default_subdomain);
+        return $this->makePostRequest("/parent-api/employees", $data);
     }
 }

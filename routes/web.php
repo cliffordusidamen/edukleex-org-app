@@ -22,6 +22,9 @@ Route::middleware(['auth', 'active'])->group(function () {
         ->defaults('tab', 'overview')
         ->name('schools.show');
 
+    Route::post('schools/{school}/employees/store', [SchoolController::class, 'storeEmployee'])
+        ->name('schools.employees.store');
+
     Route::get('schools/{school}/show/employees', [SchoolController::class, 'show'])
         ->defaults('tab', 'employees')
         ->name('schools.show.employees');

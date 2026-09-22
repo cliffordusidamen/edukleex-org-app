@@ -1,9 +1,9 @@
 import { Head, router, useForm } from "@inertiajs/react";
 import { index, show } from "@/routes/schools";
-import { School } from "@/types";
+import { Person, School } from "@/types";
 import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { FormEvent, MouseEvent, useState } from "react";
+import { cn, formatDate } from "@/lib/utils";
+import { MouseEvent, useState } from "react";
 import { 
     Dialog, 
     DialogContent, 
@@ -19,12 +19,15 @@ import 'react-phone-number-input/style.css';
 type TabKey = 'overview' | 'employees' | 'subscriptions';
 
 interface Employee {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    status: 'active' | 'inactive';
+    id: number;
+    employee_id: string;
+    designation: string;
+    is_active: number|boolean;
+    is_admin: number|boolean;
     created_at: string;
+    updated_at: string;
+    person: Person;
+
 }
 
 interface PaginatedEmployees {
@@ -44,11 +47,11 @@ export default function SchoolShow({ school, tab, employees }: {
     const group = show(school);
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: 'Mr',
+        title: 'Mr.',
         first_name: '',
         last_name: '',
         email: '',
-        phone_number: '',
+        phone: '',
         employee_id: '',
         designation: '',
         is_admin: false,
@@ -83,15 +86,14 @@ export default function SchoolShow({ school, tab, employees }: {
         },
     ] as const;
 
-    const handleSubmit = (e: React.SubmitEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({ data })
-        // post(show(school).url + '/employees', {
-        //     onSuccess: () => {
-        //         setIsModalOpen(false);
-        //         reset();
-        //     },
-        // });
+        post(`/schools/${school.id}/employees/store`, {
+            onSuccess: () => {
+                setIsModalOpen(false);
+                reset();
+            },
+        });
     };
 
     return (
@@ -178,10 +180,10 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     onChange={e => setData('title', e.target.value)}
                                                     className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
                                                 >
-                                                    <option value="Mr">Mr</option>
-                                                    <option value="Mrs">Mrs</option>
-                                                    <option value="Ms">Ms</option>
-                                                    <option value="Dr">Dr</option>
+                                                    <option value="Mr.">Mr.</option>
+                                                    <option value="Mrs.">Mrs.</option>
+                                                    <option value="Ms.">Ms.</option>
+                                                    <option value="Dr.">Dr.</option>
                                                 </select>
                                             </div>
                                             <div className="flex flex-col gap-1">
@@ -224,8 +226,8 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     <PhoneInput
                                                         international
                                                         defaultCountry="US"
-                                                        value={data.phone_number}
-                                                        onChange={value => setData('phone_number', value || '')}
+                                                        value={data.phone}
+                                                        onChange={value => setData('phone', value || '')}
                                                         className="flex gap-2"
                                                     />
                                                 </div>
@@ -246,7 +248,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 type="text" 
                                                 value={data.designation} 
                                                 onChange={e => setData('designation', e.target.value)}
-                                                className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
+                                                    className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
                                             />
                                         </div>
                                         <div className="flex items-start gap-2 py-2">
@@ -293,24 +295,24 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 <th className="px-4 py-2 font-medium">Email</th>
                                                 <th className="px-4 py-2 font-medium">Role</th>
                                                 <th className="px-4 py-2 font-medium">Status</th>
-                                                <th className="px-4 py-2 font-medium">Joined</th>
+                                                <th className="px-4 py-2 font-medium">Added</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y">
                                             {employees.data.map((employee) => (
-                                                <tr key={employee.id} className="hover:bg-neutral-50">
-                                                    <td className="px-4 py-2">{employee.name}</td>
-                                                    <td className="px-4 py-2">{employee.email}</td>
-                                                    <td className="px-4 py-2">{employee.role}</td>
+                                                <tr key={employee.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                                                    <td className="px-4 py-2">{`${employee.person.title} ${employee.person.first_name} ${employee.person.last_name}`}</td>
+                                                    <td className="px-4 py-2">{employee.person.email}</td>
+                                                    <td className="px-4 py-2">{employee.designation}</td>
                                                     <td className="px-4 py-2">
                                                         <span className={cn(
                                                             "px-2 py-0.5 rounded-full text-xs font-medium",
-                                                            employee.status === 'active' ? "bg-green-100 text-green-700" : "bg-neutral-100 text-neutral-700"
+                                                            !!employee.is_active ? "bg-green-100 text-green-700" : "bg-neutral-100 text-neutral-700"
                                                         )}>
-                                                            {employee.status}
+                                                            {!!employee.is_active ? 'ACTIVE' : 'INACTIVE'}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-2">{employee.created_at}</td>
+                                                    <td className="px-4 py-2">{formatDate(employee.created_at)}</td>
                                                 </tr>
                                             ))}
                                         </tbody>

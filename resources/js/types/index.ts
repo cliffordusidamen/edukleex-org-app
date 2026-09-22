@@ -65,3 +65,18 @@ export type School = {
     updated_at: string;
 };
 
+export type Person = {
+    id: number;
+    title: string;
+    first_name: string;
+    last_name: string;
+    middle_name?: string|null;
+    email: string;
+    phone: string;
+    gender: string;
+    date_of_birth: string;
+    created_at: string;
+    updated_at: string;
+
+}
+
