@@ -14,6 +14,7 @@ import {
     DialogTrigger 
 } from "@/components/ui/dialog";
 import PhoneInput from 'react-phone-number-input';
+import { toast } from "sonner";
 import 'react-phone-number-input/style.css';
 
 type TabKey = 'overview' | 'employees' | 'subscriptions';
@@ -93,6 +94,7 @@ export default function SchoolShow({ school, tab, employees }: {
         e.preventDefault();
         post(`/schools/${school.id}/employees/store`, {
             onSuccess: () => {
+                toast.success('Employee created successfully');
                 setIsModalOpen(false);
                 reset();
             },
