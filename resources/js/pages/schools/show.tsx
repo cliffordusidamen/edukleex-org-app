@@ -1,7 +1,7 @@
 import { Head, router, useForm } from "@inertiajs/react";
 import { index, show } from "@/routes/schools";
 import { Person, School } from "@/types";
-import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus } from "lucide-react";
+import { ArrowLeft, Building2, CreditCard, LayoutGrid, Users, Plus, Eye, EyeOff } from "lucide-react";
 import { cn, formatDate } from "@/lib/utils";
 import { MouseEvent, useState } from "react";
 import { 
@@ -44,6 +44,7 @@ export default function SchoolShow({ school, tab, employees }: {
     employees?: PaginatedEmployees;
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const group = show(school);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -55,6 +56,8 @@ export default function SchoolShow({ school, tab, employees }: {
         employee_id: '',
         designation: '',
         is_admin: false,
+        autogenerate_password: false,
+        password: '',
     });
 
     const tabs = [
@@ -242,6 +245,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 />
                                             </div>
                                         </div>
+
                                         <div className="flex flex-col gap-1">
                                             <label className="text-xs font-medium text-neutral-600">Designation</label>
                                             <input 
@@ -251,6 +255,44 @@ export default function SchoolShow({ school, tab, employees }: {
                                                     className="text-sm border rounded px-2 py-1.5 focus:outline-blue-500"
                                             />
                                         </div>
+
+                                        
+                                        <div className="flex flex-col gap-2 py-2">
+                                            <div className="flex items-center gap-2">
+                                                <input 
+                                                    type="checkbox" 
+                                                    id="autogenerate_password"
+                                                    checked={data.autogenerate_password} 
+                                                    onChange={e => setData('autogenerate_password', e.target.checked)}
+                                                    className="rounded text-blue-600 focus:ring-blue-500"
+                                                />
+                                                <label htmlFor="autogenerate_password" className="text-xs font-medium text-neutral-600 cursor-pointer">
+                                                    Autogenerate password
+                                                </label>
+                                            </div>
+                                            {!data.autogenerate_password && (
+                                                <div className="flex flex-col gap-1">
+                                                    <label className="text-xs font-medium text-neutral-600">Password</label>
+                                                    <div className="relative">
+                                                        <input 
+                                                            type={showPassword ? 'text' : 'password'} 
+                                                            value={data.password} 
+                                                            onChange={e => setData('password', e.target.value)}
+                                                            className="text-sm border rounded px-2 py-1.5 pr-10 w-full focus:outline-blue-500"
+                                                            required={!data.autogenerate_password}
+                                                        />
+                                                        <button 
+                                                            type="button"
+                                                            onClick={() => setShowPassword(!showPassword)}
+                                                            className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+                                                        >
+                                                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
                                         <div className="flex items-start gap-2 py-2">
                                             <input 
                                                 type="checkbox" 
@@ -264,6 +306,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                                 <span className="text-[10px] text-neutral-500">As administrator, this person will have full control in the system</span>
                                             </label>
                                         </div>
+
                                         <DialogFooter>
                                             <button 
                                                 type="button" 
@@ -275,6 +318,7 @@ export default function SchoolShow({ school, tab, employees }: {
                                             <button 
                                                 type="submit" 
                                                 disabled={processing}
+                                                                                                                                                  
                                                 className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
                                             >
                                                 {processing ? 'Creating...' : 'Create Employee'}
