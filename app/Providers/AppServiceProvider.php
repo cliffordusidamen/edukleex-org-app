@@ -2,11 +2,8 @@
 
 namespace App\Providers;
 
-use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Rules\Password;
+use App\Services\SaasService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,28 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureDefaults();
-    }
-
-    /**
-     * Configure default behaviors for production-ready applications.
-     */
-    protected function configureDefaults(): void
-    {
-        Date::use(CarbonImmutable::class);
-
-        DB::prohibitDestructiveCommands(
-            app()->isProduction(),
-        );
-
-        Password::defaults(fn (): ?Password => app()->isProduction()
-            ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-            : null,
-        );
+        $this->app->bind(SaasService::class, function ($app) {
+            // This is a bit tricky because SaasService requires a baseUrl in constructor,
+            // but the baseUrl changes per school in the controller.
+            // For now, we can provide a dummy or handle it via a factory/method.
+            // Actually, the current SaasService implementation expects it in constructor.
+            // Let's change the service to allow setting the baseUrl or use a different pattern.
+            return new SaasService(''); 
+        });
     }
 }

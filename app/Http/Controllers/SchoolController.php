@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Country;
 use App\Models\School;
 use App\Services\BackOfficeService;
+use App\Services\SaasService;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 
@@ -32,7 +33,21 @@ class SchoolController extends Controller
 
         $school->load('country')->append(['logo_url']);
 
-        return inertia('schools/show', compact('school', 'tab'));
+        $data = [
+            'school' => $school,
+            'tab' => $tab,
+        ];
+
+        if ($tab === 'employees') {
+            $page = $request->query('page', 1);
+            $baseUrl = $school->default_subdomain;
+            
+            $employees = $this->saasService->setBaseUrl($baseUrl)->makeRequest('GET', '/parent-api/employees', ['page' => $page]);
+            
+            $data['employees'] = $employees;
+        }
+
+        return inertia('schools/show', $data);
     }
 
     public function store(Request $request)
