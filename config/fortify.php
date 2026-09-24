@@ -109,8 +109,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | By default, Fortify will throttle logins to five requests per minute for
-    | every email and IP address combination. However, if you would like to
-    | specify a custom rate limiter to call then you may specify it here.
+    | every email and IP address combination. If you would like to specify a
+    | custom rate limiter to call then you may specify it here.
     |
     */
 
@@ -125,9 +125,9 @@ return [
     | Register View Routes
     |--------------------------------------------------------------------------
     |
-    | Here you may specify if the routes returning views should be disabled as
-    | you may not need them when building your own application. This may be
-    | especially true if you're writing a custom single-page application.
+    | Some of the Fortify features are optional. You may disable the features
+    | by removing them from this array. You're free to only remove some of
+    | these features, or even remove all of them if you need to.
     |
     */
 
@@ -156,7 +156,7 @@ return [
     |
     | Some of the Fortify features are optional. You may disable the features
     | by removing them from this array. You're free to only remove some of
-    | these features, or you can even remove all of these if you need to.
+    | these features, or even remove all of them if you need to.
     |
     */
 

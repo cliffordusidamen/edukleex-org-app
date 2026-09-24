@@ -17,7 +17,7 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'organisation_users'),
     ],
 
     /*
@@ -40,7 +40,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'organisation_users',
         ],
     ],
 
@@ -62,15 +62,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'organisation_users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -84,7 +79,7 @@ return [
     |
     | The expiry time is the number of minutes that each reset token will be
     | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
+    | they have less time to be guessed. You may change this value as needed.
     |
     | The throttle setting is the number of seconds a user must wait before
     | generating more password reset tokens. This prevents the user from
@@ -93,8 +88,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'organisation_users' => [
+            'provider' => 'organisation_users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
@@ -106,9 +101,8 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the number of seconds before a password confirmation
-    | window expires and users are asked to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | Password confirmation timeout defines the number of minutes up to which
+    | the user is considered to have confirmed their password.
     |
     */
 
