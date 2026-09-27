@@ -90,6 +90,10 @@ export default function SchoolShow({ school, tab, employees }: {
         },
     ] as const;
 
+    // `message` is a server-side (non-field) error flashed via withErrors,
+    // so it isn't part of the useForm field types.
+    const generalError = (errors as unknown as Record<string, string | string[] | undefined>).message;
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(`/schools/${school.id}/employees/store`, {
@@ -97,6 +101,17 @@ export default function SchoolShow({ school, tab, employees }: {
                 toast.success('Employee created successfully');
                 setIsModalOpen(false);
                 reset();
+            },
+            onError: (formErrors) => {
+                // Surface the actual backend error (validation or SaaS failure),
+                // not a generic fallback.
+                const values = Object.values(formErrors ?? {});
+                const first = values.find((v) => typeof v === 'string' && v.trim() !== '');
+                const message =
+                    (formErrors as Record<string, string>)?.message ||
+                    (typeof first === 'string' ? first : null) ||
+                    'Failed to create employee. Please check the form and try again.';
+                toast.error(message);
             },
         });
     };
@@ -177,6 +192,13 @@ export default function SchoolShow({ school, tab, employees }: {
                                         </DialogDescription>
                                     </DialogHeader>
                                     <form onSubmit={handleSubmit} className="space-y-4 py-4">
+                                        {generalError && (
+                                            <p className="text-xs font-medium rounded border border-red-200 bg-red-50 px-2 py-1.5 text-red-600">
+                                                {Array.isArray(generalError)
+                                                    ? generalError.join(' ')
+                                                    : generalError}
+                                            </p>
+                                        )}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="flex flex-col gap-1">
                                                 <label className="text-xs font-medium text-neutral-600">Title</label>
