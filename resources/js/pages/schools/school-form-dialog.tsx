@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useRef, useState } from "react";
-import { Organisation, School } from "@/types";
+import { DEFAULT_SCHOOL_FOREGROUND_COLOR, DEFAULT_SCHOOL_PRIMARY_COLOR } from "@/types";
+import type { Organisation, School } from "@/types";
 import { Label } from "@/components/ui/label";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
 import { Form, router, usePage } from "@inertiajs/react";
@@ -29,9 +30,14 @@ export default function SchoolFormDialog({
     const domain = usePage().props.app_domain as string;
     const formRef = useRef(null);
     const [hasMultipleProgrammes, setHasMultipleProgrammes] = useState(school?.has_multiple_programmes ?? false);
+    const [primaryColor, setPrimaryColor] = useState(school?.primary_color ?? DEFAULT_SCHOOL_PRIMARY_COLOR);
+    const [foregroundColor, setForegroundColor] = useState(school?.foreground_color ?? DEFAULT_SCHOOL_FOREGROUND_COLOR);
     const actionUrl = school
         ? `/schools/${school.id}/update`
         : `/schools/store`;
+
+    const toPickerValue = (value: string, fallback: string) =>
+        /^#[0-9a-fA-F]{6}$/.test(value) ? value : fallback;
 
     return (
         <Dialog
@@ -55,6 +61,12 @@ export default function SchoolFormDialog({
                     onSuccess={(values) => {
                         if (formRef.current) {
                             (formRef.current as HTMLFormElement)?.reset();
+                        }
+
+                        if (!school) {
+                            setPrimaryColor(DEFAULT_SCHOOL_PRIMARY_COLOR);
+                            setForegroundColor(DEFAULT_SCHOOL_FOREGROUND_COLOR);
+                            setHasMultipleProgrammes(false);
                         }
 
                         toast.success(`School ${school ? 'updated' : 'created'} successfully!`);
@@ -128,6 +140,96 @@ export default function SchoolFormDialog({
                                         value={school?.country_id ? `${school.country_id}` : undefined}
                                         required
                                     />
+                                </div>
+
+                                <div className="p-4">
+                                    <Label className="text-gray-700 mb-2">Brand colours</Label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                                        <div className="flex flex-col gap-1">
+                                            <label htmlFor="primary-color" className="text-sm font-medium text-gray-700">
+                                                Primary colour
+                                            </label>
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    id="primary-color-picker"
+                                                    type="color"
+                                                    value={toPickerValue(primaryColor, DEFAULT_SCHOOL_PRIMARY_COLOR)}
+                                                    onChange={(e) => setPrimaryColor(e.target.value)}
+                                                    className="h-9 w-12 cursor-pointer rounded border bg-white p-1"
+                                                    aria-label="Pick primary colour"
+                                                />
+                                                <TextInput
+                                                    id="primary-color"
+                                                    name="primary_color"
+                                                    type="text"
+                                                    value={primaryColor}
+                                                    onChange={(e) => setPrimaryColor(e.target.value)}
+                                                    error={errors.primary_color}
+                                                    maxLength={7}
+                                                    placeholder="#2563EB"
+                                                    className="uppercase"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col gap-1">
+                                            <label htmlFor="foreground-color" className="text-sm font-medium text-gray-700">
+                                                Foreground colour
+                                            </label>
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    id="foreground-color-picker"
+                                                    type="color"
+                                                    value={toPickerValue(foregroundColor, DEFAULT_SCHOOL_FOREGROUND_COLOR)}
+                                                    onChange={(e) => setForegroundColor(e.target.value)}
+                                                    className="h-9 w-12 cursor-pointer rounded border bg-white p-1"
+                                                    aria-label="Pick foreground colour"
+                                                />
+                                                <TextInput
+                                                    id="foreground-color"
+                                                    name="foreground_color"
+                                                    type="text"
+                                                    value={foregroundColor}
+                                                    onChange={(e) => setForegroundColor(e.target.value)}
+                                                    error={errors.foreground_color}
+                                                    maxLength={7}
+                                                    placeholder="#FFFFFF"
+                                                    className="uppercase"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-3 flex flex-wrap items-center gap-3 rounded-md border bg-muted/40 p-3">
+                                        <span className="text-xs text-muted-foreground">Preview:</span>
+                                        <Button
+                                            type="button"
+                                            style={{ backgroundColor: primaryColor, color: foregroundColor }}
+                                        >
+                                            Preview Button
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            style={{
+                                                borderColor: primaryColor,
+                                                color: primaryColor,
+                                                backgroundColor: foregroundColor,
+                                            }}
+                                        >
+                                            Outline Button
+                                        </Button>
+                                        <button
+                                            type="button"
+                                            className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                                            onClick={() => {
+                                                setPrimaryColor(DEFAULT_SCHOOL_PRIMARY_COLOR);
+                                                setForegroundColor(DEFAULT_SCHOOL_FOREGROUND_COLOR);
+                                            }}
+                                        >
+                                            Reset to defaults
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="p-4">

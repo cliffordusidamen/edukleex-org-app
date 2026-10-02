@@ -50,6 +50,10 @@ export type Country = {
     name: string;
 }
 
+export const DEFAULT_SCHOOL_PRIMARY_COLOR = '#2563EB';
+
+export const DEFAULT_SCHOOL_FOREGROUND_COLOR = '#FFFFFF';
+
 export type School = {
     id: number;
     organisation_id: number;
@@ -59,6 +63,8 @@ export type School = {
     default_subdomain: string | null;
     custom_domain: string | null;
     has_multiple_programmes: boolean;
+    primary_color?: string | null;
+    foreground_color?: string | null;
     country?: Country;
     country_id?: number;
     created_at: string;

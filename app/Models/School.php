@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class School extends Model
 {
     /**
+     * Default branding colors used when a school has no custom colors set.
+     */
+    public const DEFAULT_PRIMARY_COLOR = '#2563EB';
+
+    public const DEFAULT_FOREGROUND_COLOR = '#FFFFFF';
+
+    /**
      * The "booted" method of the model.
      */
     protected static function booted(): void
