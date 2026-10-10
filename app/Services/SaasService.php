@@ -169,7 +169,7 @@ class SaasService
             ];
         }
 
-        $this->setBaseUrl(app()->environment('local') ? 'http://127.0.0.1:8001' : $school->default_subdomain);
+        $this->setBaseUrl($school->default_subdomain);
         return $this->makePostRequest("/api/parent-api/employees", $data);
     }
 }
